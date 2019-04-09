@@ -1,13 +1,20 @@
 #! /usr/bin/python
+'''
+Description: the script will go through all your Gitlab users and check
+             their recent activities date.  
+             You must provide admin's private token
+Author: lok.bruce@gmail.com
+'''
 import gitlab
 
 def custom_sort(t):
     return t[2]
 
 activity_list = []
-mytoken = 'xxxxxxxxxxxxxxxxxxxxxx'
+mygitlab_url = 'https://gitlab.com'
+private_access_token = 'xxxxxxxxxxxxxxxxxxxxxx'
 
-gl = gitlab.Gitlab('https://gitlab.com', private_token=mytoken)
+gl = gitlab.Gitlab(mygitlab_url, private_access_token)
 
 users = gl.users.list(per_page=100)
 
