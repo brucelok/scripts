@@ -17,10 +17,8 @@ for i in range(1,4):
     try:
         print("attempt: %d" %i)
         code = auth_api()
-
-        if code == 200:
-            print('0 ' + service_name + ' - ' + "status_code: %s, API endpoint %s Success" %(code, api_url))
-            break
+        print('0 ' + service_name + ' - ' + "status_code: %s, API endpoint %s Success" %(code, api_url))
+        break
 
     except Exception as e:
         print(str(e))
