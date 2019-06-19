@@ -56,7 +56,7 @@ footer = """
 * last_activity_on:  last recorded activity for the user, including git activity
 * status:  active - a working user account
            blocked - blocked locally by gitlab admin user
-           ldap_blocked - blocked at AD level, probably the CEC is suspend or no longer existed
+           ldap_blocked - blocked at AD level, probably an user is suspend or no longer existed
            none - never had activity
 """
 print(footer)
