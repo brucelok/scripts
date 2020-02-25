@@ -1,0 +1,37 @@
+# custom centos with python3
+
+FROM centos:latest
+MAINTAINER lok.bruce@gmail.com
+
+RUN yum -y update && yum -y upgrade && yum clean all
+
+RUN yum groupinstall -y "Development tools"
+
+RUN yum install -y \
+    libffi-devel \
+    zlib-devel \
+    bzip2-devel \
+    openssl-devel \
+    ncurses-devel \
+    sqlite-devel \
+    readline-devel \
+    tk-devel \
+    gdbm-devel \
+    db4-devel \
+    libpcap-devel \
+    xz-devel \
+    expat-devel \
+    postgresql-devel \
+    wget \
+    vim
+
+RUN cd /usr/src && \
+    wget http://python.org/ftp/python/3.7.2/Python-3.7.2.tar.xz && \
+    tar xf Python-3.7.2.tar.xz && \
+    cd Python-3.7.2 && \
+    ./configure --enable-optimizations && \
+    make altinstall
+
+RUN pip3.7 install --upgrade pip
+
+CMD ["sleep", "infinity"]

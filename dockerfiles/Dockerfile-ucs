@@ -1,0 +1,42 @@
+####################################################################
+#
+# This Dockerfile has all packages needed to programmatically
+# interact with CIMC /UCSM 3.0 using Python SDK.
+# And bare-metal build automation process in NGCS
+# lok.bruce@gmail.com
+#
+####################################################################
+
+FROM centos:latest
+MAINTAINER lok.bruce@gmail.com
+
+RUN yum -y update && yum -y upgrade && yum clean all
+RUN yum -y install which wget gcc zlib-devel openssl-devel
+RUN yum -y groupinstall "Development tools"
+RUN yum -y install openssl
+
+# Install pip with Python
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    rm -rf get-pip.py && \
+    pip --version
+
+# Install RedFish Python SDK
+RUN git clone https://github.com/DMTF/python-redfish-library.git && \
+    cd python-redfish-library && \
+    python setup.py sdist --formats=zip && \
+    cd dist && \
+    z=`ls *.zip` && \
+    pip install $z && \
+    cd ../.. && \
+    rm -rf python-redfish-library
+
+# Install epel-release latest Ansible
+RUN yum -y install epel-release && \
+    yum -y install ansible
+
+# Install SDK for Cisco UCS
+RUN pip install imcsdk ucsmsdk
+RUN pip install requests PyYAML jinja2 ruamel-yaml
+
+CMD ["sleep", "infinity"]
