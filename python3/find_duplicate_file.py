@@ -1,13 +1,20 @@
-import os
+import os, sys
 import shutil
 import hashlib
 '''
+find duplicated files based on MD5 hash in the same folder
+args: the absolute path you want to check files
+return: a list of duplicated files with MD5
 author: lok.bruce@gmail.com
 '''
 
 def get_md5(fname, chunk_size=4096):
+    '''
+    MD5 hash is generated here
+    args: the target filename
+    return: the encoded data in hexadecimal format
+    '''
     hash = hashlib.md5()
-
     with open(fname, 'rb') as f:
         chunk = f.read(chunk_size)
 
@@ -20,8 +27,11 @@ def get_md5(fname, chunk_size=4096):
 
 if __name__ == "__main__":
 
-    src_folder = "/Users/brucelok/main/repo_my/awesome/"
-    dest_folder = "/Users/brucelok/main/tmp/"
+    if len(sys.argv) < 2:
+        sys.stderr.write("Usage: $ python %s <absolute path>\n" % sys.argv[0])
+        sys.exit(1)
+
+    src_folder = sys.argv[1]
     md5_dict = {}
 
     with os.scandir(src_folder) as entries:
@@ -35,14 +45,7 @@ if __name__ == "__main__":
 
     for k, v in md5_dict.items():
         dup_dict.setdefault(v, set()).add(k)
-    #print(str(dup_dict))
-
-    if not os.path.exists(dest_folder):
-        os.makedirs(dest_folder)
 
     for i, j in dup_dict.items():
         if len(j) > 1:
             print("Filenames %s has same md5 hash %s" %(j, i))
-            for n in j:
-                src = src_folder + str(n)
-                shutil.move(src, dest_folder)
