@@ -28,7 +28,7 @@ NEW_HASH=`cat $TMP | md5`
 
 # log when md5 is different
 if [ $NEW_HASH != $OLD_HASH ]; then
-  echo "$DATEFORMAT  users database /etc/passwd was changed"
+  echo "$DATEFORMAT  users database /etc/passwd was changed" >> $LOGCHANGE
 fi
 
 # log the md5 hash anyway
